@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css"
+    />
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+
+    <script src="./index.js"></script>
+  </head>
+  <body class="w-50 mx-auto" style="background-color: #212529;">
+    <form class="card text-white bg-dark mb-3 needs-validation" novalidate style="max-width: 118rem;">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">First name</label>
+        <input type="text" class="form-control" id="firstName" value="" />
+        <div class="invalid-feedback">
+         invalid
+        </div>
+        <input type="hidden" id="UI1"/>
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Last name</label>
+        <input type="text" class="form-control" id="lastName"  value=""/>
+      </div>
+      <!-- <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Country</label>
+        <input type="text" class="form-control" id="Country" />
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email id</label>
+        <input type="email" class="form-control" id="EmailID" />
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="Password" />
+      </div> -->
+    </form>
+
+    <button class="btn btn-outline-success" id="btn-save" onclick="saveData()">Submit</button><br><br>   
+    <table class="table table-hover table-dark" id="myTable">
+      <thead class="thead-dark">
+        <tr>
+          <!-- <th scope="col">user_id</th> -->
+          <th scope="col">first_name</th>
+          <th scope="col">last_name</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </body>
+</html>
