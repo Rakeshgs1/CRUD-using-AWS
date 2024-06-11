@@ -1,69 +1,454 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Home</title>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css"
-    />
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    
-    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-    
-    <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
-
-    <script src="./index.js"></script>
   </head>
-  <body class="w-50 mx-auto" style="background-color: #212529;">
-    <form class="card text-white bg-dark mb-3 needs-validation" novalidate style="max-width: 118rem;">
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">First name</label>
-        <input type="text" class="form-control" id="firstName" value="" />
-        <div class="invalid-feedback">
-         invalid
-        </div>
-        <input type="hidden" id="UI1"/>
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Last name</label>
-        <input type="text" class="form-control" id="lastName"  value=""/>
-      </div>
-      <!-- <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Country</label>
-        <input type="text" class="form-control" id="Country" />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email id</label>
-        <input type="email" class="form-control" id="EmailID" />
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="Password" />
-      </div> -->
-    </form>
+  <body>
+    <!-- Log In Form Section -->
+    <section>
+      <div class="container" id="container">
+        <div class="form-container sign-up-container">
+          <form id="form-signup">
+            <h1>Sign Up</h1>
 
-    <button class="btn btn-outline-success" id="btn-save" onclick="saveData()">Submit</button><br><br>   
-    <table class="table table-hover table-dark" id="myTable">
-      <thead class="thead-dark">
-        <tr>
-          <!-- <th scope="col">user_id</th> -->
-          <th scope="col">first_name</th>
-          <th scope="col">last_name</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+            <label>
+              <input type="text" id="name" placeholder="name" />
+            </label>
+            <label>
+              <input type="text" id="username1" placeholder="email-id" />
+            </label>
+            <label>
+              <input type="password" id="password1" placeholder="Password" />
+            </label>
+            <button style="margin-top: 9px" type="button" onclick="signup()">Sign Up</button>
+            <div id="signuploading" class="loader" style="display:none;"></div>
+          </form>
+        </div>
+        <div class="form-container sign-in-container">
+          <form id="form-login">
+            <h1>log In</h1>
+
+            <label>
+              <input
+                type="text"
+                placeholder="email-id"
+                id="username"
+                value=""
+              />
+            </label>
+            <label>
+              <input
+                type="password"
+                placeholder="Password"
+                id="password"
+                value=""
+              />
+            </label>
+            <button style="margin-top: 9px" type="button" onclick="login()">log in</button>
+            <div id="loginloading" class="loader" style="display:none;"></div>
+          </form>
+        </div>
+        <div class="overlay-container">
+          <div class="overlay">
+            <div class="overlay-panel overlay-left">
+              <h1>Log In</h1>
+              <p>Log in here if you already have an account</p>
+              <button class="ghost mt-5" id="logIn">Log In</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+              <h1>IRCTC</h1>
+              <p>Sign up if you still don't have an account ...</p>
+              <button class="ghost" id="signUp">Sign Up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
+      const signUpButton = document.getElementById("signUp");
+      const logInButton = document.getElementById("logIn");
+      const container = document.getElementById("container");
+
+      signUpButton.addEventListener("click", () =>
+        container.classList.add("right-panel-active")
+
+      );
+
+      logInButton.addEventListener("click", () =>
+        container.classList.remove("right-panel-active")
+      );
+
+      function login() {
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+
+  // Check if username and password are not empty
+  if (usernameInput.value.trim() === "" || passwordInput.value.trim() === "") {
+    swal("Error", "Please enter both username and password", "error");
+    return; // Stop function execution if there is an error
+  }
+
+  // Show loading symbol
+  document.getElementById("loginloading").style.display = "block";
+
+  // Delay hiding the loading symbol for 3 seconds
+  setTimeout(function () {
+    document.getElementById("loginloading").style.display = "none";
+  }, 3000);
+
+  const loginUser = {
+    username: usernameInput.value,
+    password: passwordInput.value,
+  };
+
+  fetch("https://5fnqbknesi.execute-api.ap-south-1.amazonaws.com/dev/login", {
+    method: "POST",
+    body: JSON.stringify(loginUser),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      var token = json.token;
+      localStorage.setItem("accesstoken", token);
+
+      if (json.token == undefined) {
+        swal("Oops", "Username or password is wrong!", "error");
+      } else {
+        window.location.href = "./index1.html";
+      }
+    });
+
+  var signin = document.getElementById("form-login");
+  signin.reset();
+}
+
+
+      function signup() {
+  // Validate form
+  const name = document.getElementById("name").value.trim();
+  const username = document.getElementById("username1").value.trim();
+  const password = document.getElementById("password1").value.trim();
+
+  if (!name || !username || !password) {
+    // One or more fields are empty
+    swal("Oops", "Please fill all required fields", "error");
+    return;
+  }
+
+  if (username.length < 4 || password.length < 4) {
+    // Username and password must be at least 4 characters long
+    swal("Oops", "Username and password must be at least 4 characters long", "error");
+    return;
+  }
+
+  // Show loading symbol
+  document.getElementById("signuploading").style.display = "block";
+
+  // Delay hiding the loading symbol for 3 seconds
+  setTimeout(function() {
+    document.getElementById("signuploading").style.display = "none";
+  }, 3000);
+
+  const signin = {
+    name,
+    username,
+    password,
+  };
+  fetch(
+    "https://5fnqbknesi.execute-api.ap-south-1.amazonaws.com/dev/register",
+    {
+      method: "POST",
+      body: JSON.stringify(signin),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((json) => {
+      setTimeout(function() {
+        swal("Great!", "You have created an irctc account!", "success");
+      }, 500);
+      var reg = document.getElementById("form-signup");
+      reg.reset();
+    })
+    .catch((error) => {
+      swal("Oops", "An error occurred while processing your request", "error");
+    });
+}
+
+    </script>
   </body>
 </html>
+
+<style>
+  .loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 254, 234, 1) 0%,
+      rgba(255, 254, 234, 1) 35%,
+      #b7e8eb 100%
+    );
+    overflow: hidden;
+  }
+
+  /* Login Section Style */
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: -20px 0 50px;
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-weight: bold;
+    margin: 0;
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: 100;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    margin: 20px 0 30px;
+  }
+
+  span {
+    font-size: 12px;
+  }
+
+  a {
+    color: #0e263d;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
+  }
+
+  .container {
+    background: #fff;
+    border-radius: 90px;
+    box-shadow: 30px 14px 28px rgba(0, 0, 5, 0.2),
+      0 10px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    opacity: 85%;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+    transition: 0ms;
+  }
+
+  .form-container form {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .social-container {
+    margin: 20px 0;
+    display: block;
+  }
+
+  .social-container a {
+    border: 1px solid #008ecf;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+    transition: 333ms;
+  }
+  .social-container a:hover {
+    transform: rotateZ(13deg);
+    border: 1px solid #0e263d;
+  }
+
+  .form-container input {
+    background: #eee;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+  }
+  .form-container input:hover {
+    transform: scale(101%);
+  }
+
+  button {
+    border-radius: 50px;
+    box-shadow: 0 1px 1px;
+    border: 1px solid #008ecf;
+    background: #008ecf;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+  }
+  
+
+  button:active {
+    transform: scale(0.95);
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  button.ghost {
+    background: transparent;
+    border-color: #fff;
+  }
+
+  .form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+  }
+
+  .sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+  }
+
+  .sign-up-container {
+    left: 0;
+    width: 50%;
+    z-index: 1;
+    opacity: 0;
+  }
+
+  .overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+  }
+
+  .overlay {
+    background: #ff416c;
+    background: linear-gradient(to right, #008ecf, #008ecf) no-repeat 0 0 /
+      cover;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateY(0);
+    transition: transform 0.6s ease-in-out;
+  }
+
+  .overlay-panel {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 40px;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 0.6s ease-in-out;
+  }
+
+  .overlay-right {
+    right: 0;
+    transform: translateY(0);
+  }
+
+  .overlay-left {
+    transform: translateY(-20%);
+  }
+
+  /* Move signin to right */
+  .container.right-panel-active .sign-in-container {
+    transform: translateY(100%);
+  }
+
+  /* Move overlay to left */
+  .container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+  }
+
+  /* Bring signup over signin */
+  .container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+  }
+
+  /* Move overlay back to right */
+  .container.right-panel-active .overlay {
+    transform: translateX(50%);
+  }
+
+  /* Bring back the text to center */
+  .container.right-panel-active .overlay-left {
+    transform: translateY(0);
+  }
+
+  /* Same effect for right */
+  .container.right-panel-active .overlay-right {
+    transform: translateY(20%);
+  }
+</style>
